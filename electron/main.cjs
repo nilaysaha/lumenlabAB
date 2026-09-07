@@ -20,6 +20,26 @@ const getAppDataDir = () => {
   return { base, projectDir, assetsDir, exportsDir };
 };
 
+// Robust helper to locate the production index.html across development, unpacked, and packaged environments
+function findIndexHtml() {
+  const candidates = [
+    path.join(__dirname, '../dist/index.html'),
+    path.join(__dirname, 'dist/index.html'),
+    path.join(__dirname, 'index.html'),
+    path.join(app.getAppPath(), 'dist/index.html'),
+    path.join(app.getAppPath(), 'index.html'),
+    path.join(process.resourcesPath, 'app/dist/index.html'),
+    path.join(process.resourcesPath, 'dist/index.html'),
+    path.join(process.cwd(), 'dist/index.html'),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return path.join(__dirname, '../dist/index.html');
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1440,
@@ -28,26 +48,52 @@ function createWindow() {
     minHeight: 700,
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 16, y: 16 },
-    backgroundColor: '#0e1015',
+    backgroundColor: '#0F1115',
+    show: false, // Show gracefully once ready
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: false,
-      webSecurity: false, // Allows local media protocol playback
+      webSecurity: false, // Allows local media protocol playback and file loading
+      allowRunningInsecureContent: true,
     },
   });
 
-  const devUrl = 'http://localhost:3000';
-  const prodIndex = path.join(__dirname, '../dist/index.html');
+  const devUrl = process.env.VITE_DEV_SERVER_URL || 'http://localhost:3000';
+  const prodIndex = findIndexHtml();
 
-  if (process.env.NODE_ENV === 'development' || !app.isPackaged) {
+  // Reveal window smoothly when content is ready to prevent black flash
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
+
+  if (process.env.NODE_ENV === 'development' && !app.isPackaged) {
     mainWindow.loadURL(devUrl).catch(() => {
-      mainWindow.loadFile(prodIndex);
+      mainWindow.loadFile(prodIndex).catch((err) => {
+        console.error('Failed to load local index.html in dev:', err);
+      });
     });
   } else {
-    mainWindow.loadFile(prodIndex);
+    mainWindow.loadFile(prodIndex).catch((err) => {
+      console.error('Failed to load local index.html in prod, retrying with loadURL:', err);
+      mainWindow.loadURL(`file://${prodIndex}`).catch((e) => {
+        console.error('Failed fallback URL load:', e);
+      });
+    });
   }
+
+  // Handle render crashes or loading failures
+  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+    console.warn(`[LumenLab] Failed to load URL (${errorCode}: ${errorDescription}): ${validatedURL}`);
+    // If dev server failed to load, automatically switch to compiled dist bundle
+    if (validatedURL.includes('localhost:3000')) {
+      const fallbackFile = findIndexHtml();
+      if (fs.existsSync(fallbackFile)) {
+        mainWindow.loadFile(fallbackFile);
+      }
+    }
+  });
 
   createNativeMenu();
 

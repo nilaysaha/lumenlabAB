@@ -21,17 +21,20 @@ npm run build
 ARCH=$(uname -m)
 echo "🖥️ Host Architecture detected: $ARCH"
 
+# Disable code-signing requirement for local builds so anyone can build without paid Apple dev certs
+export CSC_IDENTITY_AUTO_DISCOVERY=false
+
 if [ "$ARCH" = "arm64" ]; then
   echo "🍏 Building Apple Silicon native DMG (arm64)..."
-  npx electron-builder build --mac dmg --arm64 --config electron/electron-builder.json
+  npx electron-builder build --mac dmg --arm64
 else
   echo "💻 Building Intel Mac native DMG (x64)..."
-  npx electron-builder build --mac dmg --x64 --config electron/electron-builder.json
+  npx electron-builder build --mac dmg --x64
 fi
 
 echo ""
 echo "✅ Build Complete!"
 echo "📁 Your installer is located at:"
-echo "   $(pwd)/dist-electron/LumenLab Studio-1.0.0-$ARCH.dmg"
+echo "   $(pwd)/dist-electron/"
 echo ""
-echo "To install on your Mac, double-click the .dmg file and drag LumenLab Studio to Applications."
+echo "To install on your Mac, open the .dmg file in dist-electron/ and drag LumenLab Studio to Applications."

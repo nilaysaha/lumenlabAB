@@ -11,12 +11,36 @@
     "start": "node dist/server.cjs",
     "electron": "electron electron/main.cjs",
     "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && electron electron/main.cjs\"",
-    "dist:mac": "vite build && electron-builder --mac --config electron/electron-builder.json",
-    "dist:mac:arm64": "vite build && electron-builder --mac dmg --arm64 --config electron/electron-builder.json",
-    "dist:mac:x64": "vite build && electron-builder --mac dmg --x64 --config electron/electron-builder.json",
-    "dist:mac:universal": "vite build && electron-builder --mac dmg --universal --config electron/electron-builder.json",
+    "dist:mac": "vite build && electron-builder --mac",
+    "dist:mac:arm64": "vite build && electron-builder --mac dmg --arm64",
+    "dist:mac:x64": "vite build && electron-builder --mac dmg --x64",
+    "dist:mac:universal": "vite build && electron-builder --mac dmg --universal",
     "electron:build:mac": "npm run dist:mac",
     "lint": "tsc --noEmit"
+  },
+  "build": {
+    "appId": "com.lumenlab.studio",
+    "productName": "LumenLab Studio",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.video",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["arm64", "x64", "universal"]
+        }
+      ],
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    }
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
