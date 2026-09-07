@@ -1,0 +1,54 @@
+{
+  "appId": "com.lumenlab.studio",
+  "productName": "LumenLab Studio",
+  "copyright": "Copyright © 2026 LumenLab Inc.",
+  "directories": {
+    "output": "dist-electron"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "package.json"
+  ],
+  "mac": {
+    "category": "public.app-category.video",
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["arm64", "x64", "universal"]
+      },
+      {
+        "target": "zip",
+        "arch": ["arm64", "x64"]
+      }
+    ],
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "darkModeSupport": true,
+    "minimumSystemVersion": "12.0.0",
+    "extendInfo": {
+      "NSCameraUsageDescription": "LumenLab requires camera access to record video directly into timeline tracks.",
+      "NSMicrophoneUsageDescription": "LumenLab requires microphone access for voiceovers and audio recording.",
+      "NSAppleEventsUsageDescription": "LumenLab requires AppleEvents for FFmpeg hardware acceleration."
+    }
+  },
+  "dmg": {
+    "title": "Install LumenLab Studio",
+    "contents": [
+      {
+        "x": 130,
+        "y": 220
+      },
+      {
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ],
+    "window": {
+      "width": 540,
+      "height": 380
+    }
+  }
+}

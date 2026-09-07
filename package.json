@@ -1,0 +1,42 @@
+{
+  "name": "lumenlab-ai-studio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "LumenLab AI Studio - Desktop & Video Editing Suite for macOS & Web",
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx server.ts",
+    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "start": "node dist/server.cjs",
+    "electron": "electron electron/main.cjs",
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && electron electron/main.cjs\"",
+    "dist:mac": "vite build && electron-builder --mac --config electron/electron-builder.json",
+    "dist:mac:arm64": "vite build && electron-builder --mac dmg --arm64 --config electron/electron-builder.json",
+    "dist:mac:x64": "vite build && electron-builder --mac dmg --x64 --config electron/electron-builder.json",
+    "dist:mac:universal": "vite build && electron-builder --mac dmg --universal --config electron/electron-builder.json",
+    "electron:build:mac": "npm run dist:mac",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google/genai": "^2.4.0",
+    "@tailwindcss/vite": "^4.1.14",
+    "@vitejs/plugin-react": "^5.0.4",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1",
+    "vite": "^6.2.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.14.0",
+    "autoprefixer": "^10.4.21",
+    "esbuild": "^0.25.0",
+    "tailwindcss": "^4.1.14",
+    "tsx": "^4.21.0",
+    "typescript": "~5.8.2"
+  }
+}

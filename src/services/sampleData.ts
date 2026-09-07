@@ -1,0 +1,285 @@
+import { ProjectRecord, TimelineTrack, TimelineClip, AssetRecord } from '../types/video';
+
+export const RESOLUTION_PRESETS = [
+  { width: 1920, height: 1080, aspectRatio: '16:9' as const, label: '1080p Full HD (16:9)' },
+  { width: 3840, height: 2160, aspectRatio: '16:9' as const, label: '4K Ultra HD (16:9)' },
+  { width: 1080, height: 1920, aspectRatio: '9:16' as const, label: 'TikTok / Reels / Shorts (9:16)' },
+  { width: 1080, height: 1080, aspectRatio: '1:1' as const, label: 'Square Post (1:1)' },
+  { width: 1080, height: 1350, aspectRatio: '4:5' as const, label: 'Instagram Portrait (4:5)' },
+  { width: 2560, height: 1080, aspectRatio: '21:9' as const, label: 'Cinematic Ultrawide (21:9)' },
+];
+
+export const DEFAULT_TRACKS: TimelineTrack[] = [
+  { id: 'track_text', name: 'Text & Captions', type: 'text', order: 0, muted: false, locked: false, hidden: false, volume: 1.0 },
+  { id: 'track_overlay', name: 'Overlays & VFX', type: 'overlay', order: 1, muted: false, locked: false, hidden: false, volume: 1.0 },
+  { id: 'track_video_main', name: 'Main Video', type: 'video', order: 2, muted: false, locked: false, hidden: false, volume: 1.0 },
+  { id: 'track_sfx', name: 'Sound FX', type: 'audio', order: 3, muted: false, locked: false, hidden: false, volume: 1.0 },
+  { id: 'track_music', name: 'Background Music', type: 'audio', order: 4, muted: false, locked: false, hidden: false, volume: 0.8 },
+];
+
+export const SAMPLE_PROJECT: ProjectRecord = {
+  id: 'proj_starter_viral',
+  title: 'Neon Cyberpunk Reel (CapCut Edit)',
+  resolution: RESOLUTION_PRESETS[2], // 9:16 TikTok
+  fps: 30,
+  duration: 12.0,
+  tracks: DEFAULT_TRACKS,
+  clips: [
+    // Video 1
+    {
+      id: 'clip_v1',
+      trackId: 'track_video_main',
+      name: 'Cyberpunk Tokyo Neon Street.mp4',
+      type: 'video',
+      src: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1080&q=80',
+      thumbnail: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=300&q=80',
+      startTime: 0,
+      duration: 5.5,
+      trimStart: 0,
+      trimEnd: 0,
+      volume: 1,
+      speed: 1,
+      muted: false,
+      fadeIn: 0.3,
+      fadeOut: 0.3,
+      transform: { x: 0, y: 0, scale: 1.05, rotation: 0, opacity: 1, blendMode: 'normal' },
+      color: { brightness: 5, contrast: 20, saturation: 35, temperature: -15, tint: 10, vignette: 25, sharpen: 15, filterLut: 'cyberpunk' },
+      transitionIn: { type: 'flash', duration: 0.4 },
+      transitionOut: { type: 'dissolve', duration: 0.5 }
+    },
+    // Video 2
+    {
+      id: 'clip_v2',
+      trackId: 'track_video_main',
+      name: '4K Mountain Cinematic Drone.mp4',
+      type: 'video',
+      src: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1080&q=80',
+      thumbnail: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80',
+      startTime: 5.5,
+      duration: 6.5,
+      trimStart: 0,
+      trimEnd: 0,
+      volume: 1,
+      speed: 1.2,
+      muted: false,
+      fadeIn: 0.3,
+      fadeOut: 0.5,
+      transform: { x: 0, y: 0, scale: 1.0, rotation: 0, opacity: 1, blendMode: 'normal' },
+      color: { brightness: 0, contrast: 15, saturation: 20, temperature: 10, tint: -5, vignette: 15, sharpen: 10, filterLut: 'cinematic' },
+      transitionIn: { type: 'whip-pan', duration: 0.4 }
+    },
+    // Overlay VFX
+    {
+      id: 'clip_vfx1',
+      trackId: 'track_overlay',
+      name: 'Golden Anamorphic Lens Flare.png',
+      type: 'image',
+      src: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1080&q=80',
+      startTime: 0.5,
+      duration: 4.5,
+      trimStart: 0,
+      trimEnd: 0,
+      volume: 0,
+      speed: 1,
+      muted: true,
+      fadeIn: 0.5,
+      fadeOut: 0.8,
+      transform: { x: 0, y: -15, scale: 1.2, rotation: 12, opacity: 0.65, blendMode: 'screen' },
+      color: { brightness: 10, contrast: 30, saturation: 40, temperature: 20, tint: 0, vignette: 0, sharpen: 0 }
+    },
+    // Animated Text 1 (Hook)
+    {
+      id: 'clip_txt1',
+      trackId: 'track_text',
+      name: 'Hook: "STOP SCROLLING ⚡"',
+      type: 'text',
+      src: '',
+      startTime: 0.3,
+      duration: 2.7,
+      trimStart: 0,
+      trimEnd: 0,
+      volume: 0,
+      speed: 1,
+      muted: true,
+      fadeIn: 0.2,
+      fadeOut: 0.2,
+      transform: { x: 0, y: -20, scale: 1.0, rotation: 0, opacity: 1 },
+      color: { brightness: 0, contrast: 0, saturation: 0, temperature: 0, tint: 0, vignette: 0, sharpen: 0 },
+      textData: {
+        text: '⚡ STOP SCROLLING',
+        fontFamily: 'Syne',
+        fontSize: 48,
+        fontWeight: '800',
+        color: '#ffea00',
+        strokeColor: '#000000',
+        strokeWidth: 3,
+        shadowColor: 'rgba(255, 234, 0, 0.6)',
+        shadowBlur: 16,
+        backgroundColor: 'rgba(14, 16, 21, 0.75)',
+        animation: 'bounce',
+        alignment: 'center'
+      }
+    },
+    // Animated Text 2 (Body)
+    {
+      id: 'clip_txt2',
+      trackId: 'track_text',
+      name: 'Sub: "Built with LumenLab Desktop"',
+      type: 'text',
+      src: '',
+      startTime: 3.2,
+      duration: 3.8,
+      trimStart: 0,
+      trimEnd: 0,
+      volume: 0,
+      speed: 1,
+      muted: true,
+      fadeIn: 0.2,
+      fadeOut: 0.3,
+      transform: { x: 0, y: 25, scale: 1.0, rotation: 0, opacity: 1 },
+      color: { brightness: 0, contrast: 0, saturation: 0, temperature: 0, tint: 0, vignette: 0, sharpen: 0 },
+      textData: {
+        text: '🔥 Offline FFmpeg Power on macOS',
+        fontFamily: 'Plus Jakarta Sans',
+        fontSize: 32,
+        fontWeight: '700',
+        color: '#ffffff',
+        backgroundColor: '#6366f1',
+        strokeColor: 'transparent',
+        strokeWidth: 0,
+        shadowColor: 'rgba(99, 102, 241, 0.5)',
+        shadowBlur: 12,
+        animation: 'slide-up',
+        alignment: 'center'
+      }
+    },
+    // SFX Whoosh
+    {
+      id: 'clip_sfx1',
+      trackId: 'track_sfx',
+      name: 'Cinematic Whoosh Transition.wav',
+      type: 'sfx',
+      src: 'https://cdn.freesound.org/previews/608/608645_11861866-lq.mp3',
+      startTime: 0.2,
+      duration: 1.8,
+      trimStart: 0,
+      trimEnd: 0,
+      volume: 1.0,
+      speed: 1,
+      muted: false,
+      fadeIn: 0.1,
+      fadeOut: 0.2,
+      transform: { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 },
+      color: { brightness: 0, contrast: 0, saturation: 0, temperature: 0, tint: 0, vignette: 0, sharpen: 0 }
+    },
+    // SFX Bass Drop
+    {
+      id: 'clip_sfx2',
+      trackId: 'track_sfx',
+      name: 'Deep Bass Sub Drop.wav',
+      type: 'sfx',
+      src: 'https://cdn.freesound.org/previews/442/442943_9159316-lq.mp3',
+      startTime: 5.3,
+      duration: 2.2,
+      trimStart: 0,
+      trimEnd: 0,
+      volume: 1.2,
+      speed: 1,
+      muted: false,
+      fadeIn: 0.05,
+      fadeOut: 0.4,
+      transform: { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 },
+      color: { brightness: 0, contrast: 0, saturation: 0, temperature: 0, tint: 0, vignette: 0, sharpen: 0 }
+    },
+    // Background Music Track
+    {
+      id: 'clip_music1',
+      trackId: 'track_music',
+      name: 'Midnight Drive (Synthwave Beat).mp3',
+      type: 'audio',
+      src: 'https://cdn.freesound.org/previews/560/560446_11861866-lq.mp3',
+      startTime: 0,
+      duration: 12.0,
+      trimStart: 0,
+      trimEnd: 0,
+      volume: 0.75,
+      speed: 1,
+      muted: false,
+      fadeIn: 0.5,
+      fadeOut: 1.2,
+      transform: { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 },
+      color: { brightness: 0, contrast: 0, saturation: 0, temperature: 0, tint: 0, vignette: 0, sharpen: 0 }
+    }
+  ],
+  createdAt: Date.now() - 3600000,
+  updatedAt: Date.now()
+};
+
+export const SAMPLE_EFFECTS = [
+  { id: 'cyberpunk', name: 'Cyberpunk Glow', type: 'lut', preview: '#ff007f', icon: 'Sparkles', desc: 'Neon pink & cyan tint with high contrast' },
+  { id: 'cinematic', name: 'Teal & Orange', type: 'lut', preview: '#00a896', icon: 'Film', desc: 'Hollywood cinematic blockbuster color grade' },
+  { id: 'vintage', name: 'Vintage 70s Film', type: 'lut', preview: '#d4a373', icon: 'Camera', desc: 'Warm nostalgic tones with subtle grain' },
+  { id: 'bw', name: 'Noir High Contrast', type: 'lut', preview: '#333333', icon: 'Eye', desc: 'Dramatic black & white with deep shadows' },
+  { id: 'vhs', name: 'Retro VHS Glitch', type: 'lut', preview: '#9d4edd', icon: 'Tv', desc: '90s camcorder color bleeding and scanlines' },
+  { id: 'moody', name: 'Nordic Moody', type: 'lut', preview: '#4a5568', icon: 'CloudRain', desc: 'Desaturated cinematic cold tones' },
+];
+
+export const SAMPLE_TRANSITIONS = [
+  { id: 'dissolve', name: 'Cross Dissolve', icon: 'Layers', duration: 0.5 },
+  { id: 'flash', name: 'White Flash', icon: 'Zap', duration: 0.3 },
+  { id: 'whip-pan', name: 'Whip Pan Right', icon: 'MoveRight', duration: 0.4 },
+  { id: 'zoom-in', name: 'Zoom In Punch', icon: 'ZoomIn', duration: 0.35 },
+  { id: 'zoom-out', name: 'Zoom Out Spin', icon: 'ZoomOut', duration: 0.35 },
+  { id: 'glitch', name: 'Digital Glitch', icon: 'Activity', duration: 0.25 },
+  { id: 'wipe-left', name: 'Wipe Left', icon: 'ChevronLeft', duration: 0.4 },
+];
+
+export const SAMPLE_TEXT_TEMPLATES = [
+  {
+    name: 'Viral Bold Hook',
+    text: 'WAIT FOR THE END 😱',
+    fontFamily: 'Syne',
+    fontSize: 44,
+    fontWeight: '800',
+    color: '#ffea00',
+    strokeColor: '#000000',
+    strokeWidth: 3,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    animation: 'bounce' as const,
+  },
+  {
+    name: 'Minimal Clean Lower Third',
+    text: 'LUMENLAB AI STUDIO • 2026',
+    fontFamily: 'Plus Jakarta Sans',
+    fontSize: 26,
+    fontWeight: '600',
+    color: '#ffffff',
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    strokeColor: 'transparent',
+    strokeWidth: 0,
+    animation: 'slide-up' as const,
+  },
+  {
+    name: 'Cyberpunk Neon Glowing',
+    text: 'FUTURE OF VIDEO // v2.4',
+    fontFamily: 'JetBrains Mono',
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#00f0ff',
+    strokeColor: '#000',
+    strokeWidth: 2,
+    shadowColor: '#00f0ff',
+    shadowBlur: 20,
+    animation: 'glow-pulse' as const,
+  },
+  {
+    name: 'CapCut Caption Pill',
+    text: '✨ Auto-Generated Subtitles',
+    fontFamily: 'Plus Jakarta Sans',
+    fontSize: 30,
+    fontWeight: '700',
+    color: '#ffffff',
+    backgroundColor: '#6366f1',
+    animation: 'typewriter' as const,
+  }
+];

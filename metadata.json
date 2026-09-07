@@ -1,0 +1,7 @@
+{
+  "name": "LumenLab Studio - Desktop & Video Suite",
+  "description": "Offline-first desktop and web video editor with CapCut-style multi-track timeline, local asset database, FFmpeg backend processing, and macOS Electron integration.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
